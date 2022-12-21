@@ -17,7 +17,7 @@ namespace Distances
             string readMatriz = File.ReadAllText(matrizPath.ToString());
             string readCaminho = File.ReadAllText(caminhoPath.ToString());
             string[] getMatriz = readMatriz.Split("\n");
-            Console.WriteLine(getMatriz.Length);
+            string[] getCaminho = readCaminho.Split(",");
 
             if(getMatriz.Length < 2)
             {
@@ -25,47 +25,34 @@ namespace Distances
                 return;
             }
 
-            int[,] newMatriz = new int[getMatriz.Length, getMatriz.Length];
+            string[,] newMatriz = new string[getMatriz.Length, getMatriz.Length];
 
             for (int i = 0; i < getMatriz.Length; i++)
             {
-                int[] auxArray = getMatriz[i].Split(",").ToInt();
+                
+                string[] auxArray = getMatriz[i].Split(",");
                 for (int j = 0; j < getMatriz.Length; j++)
                 {
                     newMatriz[i, j] = auxArray[j];
                 }
             }
 
-            /*if(qteCidades < 2)
+            /*for (int i = 0; i < getMatriz.Length; i++)
             {
-                Console.WriteLine("Não é possível calcular distância");
-                return;
-            }
-
-            for (int i = 0; i < qteCidades; i++)
-            {
-                for (int j = i+1; j < qteCidades; j++)
+                for (int j = 0; j < getMatriz.Length; j++)
                 {
-                    Console.WriteLine($"Distância entre as cidades {i+1} e {j+1}: ");
-                    rDist = Console.ReadLine().ToInt();
-                    distancias[i, j] = rDist;
-                    distancias[j, i] = rDist;  
+                    Console.WriteLine($"Distância entre as cidades {i + 1} e {j + 1}: {newMatriz[i, j]}");
                 }
-            }
+            }*/
 
-            Console.WriteLine("Entre com um percurso (separado por vírgulas)");
-            string[] strPercurso = Console.ReadLine().Split(",");
-            int[] arrPercurso = Array.ConvertAll(strPercurso, int.Parse);
-            
-            
-
-            for(int i = 1; i < arrPercurso.Length; i++)
+            int somaDist = 0;
+            int[] arrPercurso = Array.ConvertAll(getCaminho, int.Parse);
+            for (int i = 1; i < arrPercurso.Length; i++)
             {
-                somaDist += distancias[arrPercurso[i-1]-1, arrPercurso[i]-1]; 
+                somaDist += newMatriz[arrPercurso[i - 1] - 1, arrPercurso[i] - 1].ToInt();
             }
 
-            Console.WriteLine($"Distância percorrida: {somaDist} km");*/
-
+            Console.WriteLine($"Distância percorrida: {somaDist} km");
 
         }
     }
