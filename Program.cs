@@ -29,7 +29,7 @@ namespace Distances
                 return;
 
             var numColunas = csvMatriz.Record.Length;
-            var distancias = new int[numColunas, numColunas];
+            int[,] distancias = new int[numColunas, numColunas];
 
             for (int i = 0; i < numColunas; i++)
             {
@@ -43,81 +43,21 @@ namespace Distances
                 csvMatriz.Read();
             }
 
-            PrintMatriz(distancias);
-
             using var readerCaminho = new StreamReader(caminhoPath);
             using var csvCaminho = new CsvParser(readerCaminho, config);
-            var vCaminho = csvCaminho.Record;
-            
-            for (int i = 0; i < csvCaminho.Record.Length; i++)
-            {
-                Console.WriteLine(vCaminho[i]);
-            }
-
-
-            /*
-            string readMatriz = File.ReadAllText(matrizPath.ToString());
-            string readCaminho = File.ReadAllText(caminhoPath.ToString());
-
-
-
-
-
-            string[] getMatriz = readMatriz.Split("\n");
-            string[] getCaminho = readCaminho.Split(",");
-
-            if(getMatriz.Length < 2)
-            {
-                Console.WriteLine("Não é possível calcular distância");
+            if (!csvCaminho.Read())
                 return;
-            }
 
-            string[,] newMatriz = new string[getMatriz.Length, getMatriz.Length];
-
-            for (int i = 0; i < getMatriz.Length; i++)
-            {
-                
-                string[] auxArray = getMatriz[i].Split(",");
-                for (int j = 0; j < getMatriz.Length; j++)
-                {
-                    newMatriz[i, j] = auxArray[j];
-                }
-            }
-
-            for (int i = 0; i < getMatriz.Length; i++)
-            {
-                for (int j = 0; j < getMatriz.Length; j++)
-                {
-                    Console.WriteLine($"Distância entre as cidades {i + 1} e {j + 1}: {newMatriz[i, j]}");
-                }
-            }
-
+            var vCaminho = csvCaminho.Record;
             int somaDist = 0;
-            int[] arrPercurso = Array.ConvertAll(getCaminho, int.Parse);
-            for (int i = 1; i < arrPercurso.Length; i++)
+            int[] arrCaminho = Array.ConvertAll(vCaminho, int.Parse);
+
+            for (int i = 1; i < arrCaminho.Length; i++)
             {
-                somaDist += newMatriz[arrPercurso[i - 1] - 1, arrPercurso[i] - 1].ToInt();
+                somaDist += distancias[arrCaminho[i - 1] - 1, arrCaminho[i] - 1];
             }
 
-            Console.WriteLine($"Distância percorrida: {somaDist} km"); */
-
+            Console.WriteLine($"Distância percorrida: {somaDist} km");
         }
-        private static void PrintMatriz(int[,] cities)
-        {
-            var strBuilder = new StringBuilder();
-
-            for (int i = 0; i < cities.GetLength(0); i++)
-            {
-                for (int j = 0; j < cities.GetLength(0); j++)
-                {
-                    strBuilder.Append($"{cities[i, j]} ");
-                }
-
-                strBuilder.AppendLine();
-            }
-
-            Console.WriteLine(strBuilder.ToString());
-        }
-
     }
 }
