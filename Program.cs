@@ -29,7 +29,7 @@ namespace Distances
                 return;
 
             var numColunas = csvMatriz.Record.Length;
-            var cities = new int[numColunas, numColunas];
+            var distancias = new int[numColunas, numColunas];
 
             for (int i = 0; i < numColunas; i++)
             {
@@ -37,13 +37,24 @@ namespace Distances
 
                 for (int j = 0; j < numColunas; j++)
                 {
-                    cities[i, j] = int.Parse(linha[j]);
+                    distancias[i, j] = int.Parse(linha[j]);
                 }
 
                 csvMatriz.Read();
             }
 
-            PrintMatriz(cities);
+            PrintMatriz(distancias);
+
+            using var readerCaminho = new StreamReader(caminhoPath);
+            using var csvCaminho = new CsvParser(readerCaminho, config);
+            var vCaminho = csvCaminho.Record;
+            
+            for (int i = 0; i < csvCaminho.Record.Length; i++)
+            {
+                Console.WriteLine(vCaminho[i]);
+            }
+
+
             /*
             string readMatriz = File.ReadAllText(matrizPath.ToString());
             string readCaminho = File.ReadAllText(caminhoPath.ToString());
