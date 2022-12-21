@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.IO;
 
 namespace Distances
 {
@@ -7,13 +8,35 @@ namespace Distances
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Quantidade de cidades: ");
-            int rDist;
-            int somaDist = 0;
-            var qteCidades = Console.ReadLine().ToInt();
-            int[,] distancias = new int[qteCidades, qteCidades];
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            var matrizPath = new FileInfo(Path.Combine(desktopPath, "matriz.txt"));
+            var caminhoPath = new FileInfo(Path.Combine(desktopPath, "caminho.txt"));
+            if (!matrizPath.Exists || !caminhoPath.Exists) {
+                return;
+            }
+            string readMatriz = File.ReadAllText(matrizPath.ToString());
+            string readCaminho = File.ReadAllText(caminhoPath.ToString());
+            string[] getMatriz = readMatriz.Split("\n");
+            Console.WriteLine(getMatriz.Length);
 
-            if(qteCidades < 2)
+            if(getMatriz.Length < 2)
+            {
+                Console.WriteLine("Não é possível calcular distância");
+                return;
+            }
+
+            int[,] newMatriz = new int[getMatriz.Length, getMatriz.Length];
+
+            for (int i = 0; i < getMatriz.Length; i++)
+            {
+                int[] auxArray = getMatriz[i].Split(",").ToInt();
+                for (int j = 0; j < getMatriz.Length; j++)
+                {
+                    newMatriz[i, j] = auxArray[j];
+                }
+            }
+
+            /*if(qteCidades < 2)
             {
                 Console.WriteLine("Não é possível calcular distância");
                 return;
@@ -41,7 +64,7 @@ namespace Distances
                 somaDist += distancias[arrPercurso[i-1]-1, arrPercurso[i]-1]; 
             }
 
-            Console.WriteLine($"Distância percorrida: {somaDist} km");
+            Console.WriteLine($"Distância percorrida: {somaDist} km");*/
 
 
         }
